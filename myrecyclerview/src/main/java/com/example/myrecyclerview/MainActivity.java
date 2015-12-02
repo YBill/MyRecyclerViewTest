@@ -3,8 +3,10 @@ package com.example.myrecyclerview;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,12 +27,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initData();
         assignViews();
-        mRecyclerview.setLayoutManager(new LinearLayoutManager(this));
+//        mRecyclerview.setLayoutManager(new LinearLayoutManager(this));// 类似ListVeiw
+//        mRecyclerview.setLayoutManager(new GridLayoutManager(this,4));// 类似GridView
+        mRecyclerview.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.HORIZONTAL));
         adapter = new MyRecyclerViewAdapter(this);
         adapter.setList(mDatas);
         mRecyclerview.setAdapter(adapter);
-        mRecyclerview.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
-
+//        mRecyclerview.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));//一条线，用于listview
+        mRecyclerview.addItemDecoration(new DividerGridItemDecoration(this));//多条线，用于Gridview样式
     }
 
     private void initData(){

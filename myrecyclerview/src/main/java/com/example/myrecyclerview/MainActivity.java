@@ -1,16 +1,9 @@
 package com.example.myrecyclerview;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +12,7 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerview;
     private MyRecyclerViewAdapter adapter;
+    private MyWaterFallsFlowAdapter flowAdapter;
     private List<String> mDatas = new ArrayList<String>();
 
     @Override
@@ -29,65 +23,28 @@ public class MainActivity extends AppCompatActivity {
         assignViews();
 //        mRecyclerview.setLayoutManager(new LinearLayoutManager(this));// 类似ListVeiw
 //        mRecyclerview.setLayoutManager(new GridLayoutManager(this,4));// 类似GridView
-        mRecyclerview.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.HORIZONTAL));
-        adapter = new MyRecyclerViewAdapter(this);
-        adapter.setList(mDatas);
-        mRecyclerview.setAdapter(adapter);
+        mRecyclerview.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
+
+//        adapter = new MyRecyclerViewAdapter(this);
+//        adapter.setList(mDatas);
+//        mRecyclerview.setAdapter(adapter);
+
+        flowAdapter = new MyWaterFallsFlowAdapter(this);
+        flowAdapter.setList(mDatas);
+        mRecyclerview.setAdapter(flowAdapter);
+
 //        mRecyclerview.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));//一条线，用于listview
-        mRecyclerview.addItemDecoration(new DividerGridItemDecoration(this));//多条线，用于Gridview样式
+//        mRecyclerview.addItemDecoration(new DividerGridItemDecoration(this));//多条线，用于Gridview样式
     }
 
-    private void initData(){
-        for (int i= 'A'; i < 'z'; i++){
-            mDatas.add(""+(char)i);
+    private void initData() {
+        for (int i = 'A'; i < 'z'; i++) {
+            mDatas.add("" + (char) i);
         }
-    }
-
-    class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAdapter.MyViewHolder>{
-
-        private List<String> list = new ArrayList<String>();
-        private LayoutInflater inflater;
-
-        public void setList(List<String> list) {
-            this.list = list;
-        }
-
-        public MyRecyclerViewAdapter(Context context) {
-           inflater = LayoutInflater.from(context);
-        }
-
-        @Override
-        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = inflater.inflate(R.layout.recyclerview_item, parent, false);
-            MyViewHolder myViewHolder = new MyViewHolder(view);
-            return myViewHolder;
-        }
-
-        @Override
-        public void onBindViewHolder(MyViewHolder holder, int position) {
-            holder.tv.setText(list.get(position));
-        }
-
-        @Override
-        public int getItemCount() {
-            return list.size();
-        }
-
-        class MyViewHolder extends RecyclerView.ViewHolder{
-
-            TextView tv;
-
-            public MyViewHolder(View itemView) {
-                super(itemView);
-                tv = (TextView) itemView.findViewById(R.id.id_num);
-            }
-        }
-
     }
 
     private void assignViews() {
         mRecyclerview = (RecyclerView) findViewById(R.id.id_recyclerview);
     }
-
 
 }

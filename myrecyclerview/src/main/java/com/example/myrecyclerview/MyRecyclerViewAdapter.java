@@ -13,7 +13,8 @@ import java.util.List;
 /**
  * Created by 卫彪 on 2015/12/2.
  */
-public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAdapter.MyViewHolder> {
+public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAdapter.MyViewHolder>
+        implements View.OnClickListener, View.OnLongClickListener{
     private List<String> list = new ArrayList<String>();
     private LayoutInflater inflater;
 
@@ -26,6 +27,38 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     }
 
     @Override
+    public void onClick(View v) {
+        if(v.getTag() != null){
+            int index = (int)v.getTag();
+            if(mCallback != null){
+                mCallback.onClick(index);
+            }
+        }
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        if(v.getTag() != null){
+            int index = (int)v.getTag();
+            if(mCallback != null){
+                mCallback.onLongClick(index);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public interface ClickListener{
+        void onClick(int index);
+        void onLongClick(int index);
+    }
+    private ClickListener mCallback;
+
+    public void setmCallback(ClickListener mCallback) {
+        this.mCallback = mCallback;
+    }
+
+    @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.recyclerview_item, parent, false);
         MyViewHolder myViewHolder = new MyViewHolder(view);
@@ -35,6 +68,9 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.tv.setText(list.get(position));
+        holder.itemView.setTag(position);
+        holder.itemView.setOnClickListener(this);
+        holder.itemView.setOnLongClickListener(this);
     }
 
     @Override

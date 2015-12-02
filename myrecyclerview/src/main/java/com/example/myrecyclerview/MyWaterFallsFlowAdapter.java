@@ -37,6 +37,17 @@ public class MyWaterFallsFlowAdapter extends RecyclerView.Adapter<MyWaterFallsFl
         setData();
     }
 
+    public interface OnItemClickListener{
+        void onItemClick(View view, int position);
+
+        void onItemLongClick(View view, int position);
+    }
+
+    private OnItemClickListener onItemClickListener;
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
+        this.onItemClickListener = onItemClickListener;
+    }
+
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.falls_recyclerview_item, parent, false);
@@ -45,12 +56,28 @@ public class MyWaterFallsFlowAdapter extends RecyclerView.Adapter<MyWaterFallsFl
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
         ViewGroup.LayoutParams lp = holder.tv.getLayoutParams();
         lp.height = mHeights.get(position);
         holder.tv.setLayoutParams(lp);
 
         holder.tv.setText(list.get(position));
+
+        if(onItemClickListener != null){
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClickListener.onItemClick(holder.itemView, position);
+                }
+            });
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    onItemClickListener.onItemLongClick(holder.itemView, position);
+                    return false;
+                }
+            });
+        }
     }
 
     @Override

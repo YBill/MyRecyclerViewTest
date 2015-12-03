@@ -2,9 +2,9 @@ package com.example.myrecyclerview;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -23,9 +23,11 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         setContentView(R.layout.activity_main);
         initData();
         assignViews();
-//        mRecyclerview.setLayoutManager(new LinearLayoutManager(this));// 类似ListVeiw
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+//        manager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        mRecyclerview.setLayoutManager(manager);// 类似ListVeiw
 //        mRecyclerview.setLayoutManager(new GridLayoutManager(this,4));// 类似GridView
-        mRecyclerview.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
+//        mRecyclerview.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.HORIZONTAL));
 
         //正常的
         adapter = new MyRecyclerViewAdapter(this);
